@@ -3,19 +3,28 @@ import styled from 'styled-components'
 import CircleRing from "../../Icons/CircleRing";
 
 const TodoPriority = (props) => {
-    const [priorityOption, setPriorityOption] = useState()
+    const [priorityOption, setPriorityOption] = useState(props.priority)
+
+
 
     const priorityHandle = (e)=>{
         setPriorityOption(e.target.value)
     }
+
+
+
+
+
+
+
   return (
     <Priority style={props.style} priority={priorityOption}>
         <CircleRing />
 
-        <select  value={priorityOption} onChange={priorityHandle} >
-        <option selected >Minor</option>
-        <option >Normal</option>
-        <option>Critical</option>
+        <select   value={priorityOption} onChange={priorityHandle} >
+        <option value={'Minor'}>Minor</option>
+        <option value={'Normal'}>Normal</option>
+        <option value={'Critical'}>Critical</option>
         </select>
       </Priority>
   )

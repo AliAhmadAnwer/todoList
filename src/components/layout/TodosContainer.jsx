@@ -2,7 +2,7 @@ import { useState } from 'react';
 import React from 'react'
 import styled from 'styled-components';
 import TodoList from './TodoList';
-import AlertDialog from './Dialog';
+import AlertDialog from './TodoForm';
 
 
 const TodosContainer = () => {

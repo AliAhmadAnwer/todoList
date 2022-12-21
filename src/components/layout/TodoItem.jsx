@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { Menu, Radio } from "../../Icons/index";
 import TodoMenu from "./TodoMenu";
-import MenuItem from '@mui/material/MenuItem';
+
 import TodoStatus from "./TodoStatus";
 import TodoPriority from "./TodoPriority";
 
 
-const TodoItem = () => {
+const TodoItem = (props) => {
 
 
   
@@ -18,14 +18,11 @@ const TodoItem = () => {
     <Container>
       <Radio />
 
-      <TodoHeading>Monitor system performance and adjust hardware.</TodoHeading>
+      <TodoHeading>{props.title}</TodoHeading>
 
       
-      <TodoStatus style={{margin: 'auto'}}/>
-      <TodoPriority style={{margin: 'auto'}}/>
-
-      
-       
+      <TodoStatus status={props.status} style={{margin: 'auto'}}/>
+      <TodoPriority priority={props.priority} style={{margin: 'auto'}}/>
 
      
 

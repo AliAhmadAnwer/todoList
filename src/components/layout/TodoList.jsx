@@ -7,14 +7,14 @@ const Dummy_Todo = [
     id: 1,
     title: 'MyFist Todo',
     description: 'Ali is Great dev',
-    status: 'pending',
-    priority: 'Minor'
+    status: 'Pending',
+    priority: 'Normal'
   },
   {
-    id: 1,
+    id: 2,
     title: 'MyFist Todo',
     description: 'Ali is Great dev',
-    status: 'pending',
+    status: 'Compelete',
     priority: 'Minor'
   }
 ]
@@ -24,9 +24,11 @@ const TodoList = () => {
   return (
 
   <>
-    <TodoItem />
-    <TodoItem />
-    <TodoItem />
+  {Dummy_Todo.map( (todoItem) => (
+    <TodoItem key={todoItem.id} title={todoItem.title} description={todoItem.description}  status={todoItem.status} priority={todoItem.priority} />
+
+  ))}
+  
 </>
 
 

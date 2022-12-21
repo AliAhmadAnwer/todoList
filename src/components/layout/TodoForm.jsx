@@ -7,7 +7,7 @@ import TodoPriority from './TodoPriority';
 
 
 
-export default function AlertDialog(props) {
+export default function TodoForm(props) {
   const [title, setTitle] = React.useState();
 
   const titleChangeHandler = (event)=>{
@@ -47,6 +47,8 @@ export default function AlertDialog(props) {
             </Footer>
 
             <BtnDiv>
+            <AddNewButton type='button' onClick={() => props.setAddNew(false)} >Cancel</AddNewButton>
+
             <AddNewButton type='button' onClick={formSubmitHandler} >Add New</AddNewButton>
             </BtnDiv>
 
@@ -102,6 +104,7 @@ background: #884CB2;
 border-radius: 10px;
 color: #fff;
 right: 0;
+margin-left: 10px;
 `
 
 const Footer = styled.div`

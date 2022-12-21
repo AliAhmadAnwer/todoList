@@ -1,20 +1,22 @@
-import React,{useState} from 'react'
+import React,{useState } from 'react'
 import styled from 'styled-components'
 
 const TodoStatus = (props) => {
-    const [statusOption , setStausOption] = useState()
+    const [statusOption , setStausOption] = useState(props.status)
 
 
   const statusHandler = (e) => {
 
     setStausOption(e.target.value)
-    console.log(e.target.value)
+
   }
+
+
   return (
-    <Status style={props.style} status={statusOption} value={statusOption} onChange={statusHandler}>
-        <option >Pending</option>
-        <option >In Progress</option>
-        <option>Compelete</option>
+    <Status  style={props.style} status={statusOption} value={statusOption} onChange={statusHandler}>
+        <option value={'Pending'} >Pending</option>
+        <option value={'In Progress'}>In Progress</option>
+        <option value={'Compelete'}>Compelete</option>
 
       </Status>
   )
