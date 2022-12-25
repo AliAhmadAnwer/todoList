@@ -1,15 +1,18 @@
 import Dashboard from './components/layout/Dashboard';
-import './App.css'
+
 import TodosContainer from './components/layout/TodosContainer';
 import Sidebar from './components/layout/Sidebar';
+import TodoProvider from './context/todo-provider';
 function App() {
   return (
-    <div className='App'>
+    <TodoProvider>
+   
  <Dashboard>
     <TodosContainer />
     <Sidebar />
  </Dashboard>
- </div>
+ 
+ </TodoProvider>
   );
 }
 

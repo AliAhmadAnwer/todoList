@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext} from "react";
 import styled from "styled-components";
 
 import { Menu, Radio } from "../../Icons/index";
@@ -6,9 +6,24 @@ import TodoMenu from "./TodoMenu";
 
 import TodoStatus from "./TodoStatus";
 import TodoPriority from "./TodoPriority";
+import TodoContext from "../../context/todo-context";
+import TodoForm from "./TodoForm";
 
 
 const TodoItem = (props) => {
+
+  const todoCtx = useContext(TodoContext)
+
+  const addTodoHandler = (data)=>{
+    
+    todoCtx.newTodo({
+          id : props.id, 
+          title : props.title,
+          description : props.description,
+          status : props.status,
+          priority : props.priority
+    })
+  }
 
 
   
@@ -29,6 +44,7 @@ const TodoItem = (props) => {
       <TodoMenu ButtonText={ <MenuButton>
         <Menu />
       </MenuButton>} />
+      <TodoForm onAddTodo = {addTodoHandler} />
     </Container>
   );
 };

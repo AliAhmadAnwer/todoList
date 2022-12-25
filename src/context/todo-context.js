@@ -1,12 +1,15 @@
+import React from "react";
 const TodoContext = React.createContext(
     {
         todoList : [],
-        newTodo: () => {},
+        newTodo: (item) => {},
         editTodo: () => {},
         deleteTodo: () => {},
 
     }
 )
+
+export default TodoContext;
 
 
 
