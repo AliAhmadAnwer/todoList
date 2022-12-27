@@ -11,7 +11,7 @@ const TodosContainer = () => {
     setAddNew(true)
   }
   return (
-    <div>
+    <div style={{width:'80%'}}>
       <Header>
         <Heading  variant='h1'>
         You’ve got <span >{`7 task`}</span> today 

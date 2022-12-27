@@ -1,36 +1,28 @@
-import React,{useState} from 'react'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import styled from "styled-components";
 import CircleRing from "../../Icons/CircleRing";
 
 const TodoPriority = (props) => {
-    const [priorityOption, setPriorityOption] = useState(props.priority)
+  const [priorityOption, setPriorityOption] = useState(props.priority);
 
-
-
-    const priorityHandle = (e)=>{
-        setPriorityOption(e.target.value)
-    }
-
-
-
-
-
-
+  const priorityHandle = (e) => {
+    setPriorityOption(e.target.value);
+  };
 
   return (
     <Priority style={props.style} priority={priorityOption}>
-        <CircleRing />
+      <CircleRing />
 
-        <select   value={priorityOption} onChange={priorityHandle} >
-        <option value={'Minor'}>Minor</option>
-        <option value={'Normal'}>Normal</option>
-        <option value={'Critical'}>Critical</option>
-        </select>
-      </Priority>
-  )
-}
+      <select value={priorityOption} onChange={priorityHandle}>
+        <option value={"Minor"}>Minor</option>
+        <option value={"Normal"}>Normal</option>
+        <option value={"Critical"}>Critical</option>
+      </select>
+    </Priority>
+  );
+};
 
-export default TodoPriority
+export default TodoPriority;
 
 const Priority = styled.div`
   font-weight: 400;
@@ -40,27 +32,23 @@ const Priority = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
 
   svg {
     margin-right: 4px;
     circle {
       stroke: ${({ priority }) =>
-        priority === "Minor"
+        priority === "minor"
           ? "#219653"
-          : priority === "Normal"
+          : priority === "normal"
           ? "#F2C94C"
           : "#EB5757"};
     }
   }
 
-  select{
+  select {
     appearance: none;
     border: none;
     outline: none;
     background: none;
-    
   }
-
-
 `;

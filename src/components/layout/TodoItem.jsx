@@ -1,50 +1,44 @@
-import React,{useContext} from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Menu, Radio } from "../../Icons/index";
 import TodoMenu from "./TodoMenu";
-
-import TodoStatus from "./TodoStatus";
 import TodoPriority from "./TodoPriority";
-import TodoContext from "../../context/todo-context";
-import TodoForm from "./TodoForm";
-
 
 const TodoItem = (props) => {
+  const [statusOption, setStausOption] = useState(props.status);
 
-  const todoCtx = useContext(TodoContext)
-
-  const addTodoHandler = (data)=>{
-    
-    todoCtx.newTodo({
-          id : props.id, 
-          title : props.title,
-          description : props.description,
-          status : props.status,
-          priority : props.priority
-    })
-  }
-
-
-  
-
+  const statusHandler = (e) => {
+    setStausOption(e.target.value);
+  };
 
   return (
     <Container>
       <Radio />
+      <OuterDiv>
+        <TodoHeading>{props.title}</TodoHeading>
+        <TodoDescription>{props.description}</TodoDescription>
+      </OuterDiv>
 
-      <TodoHeading>{props.title}</TodoHeading>
+      <Status
+        status={statusOption}
+        value={statusOption}
+        onChange={statusHandler}
+      >
+        <option value={"pending"}>Pending</option>
+        <option value={"inProgress"}>In Progress</option>
+        <option value={"compelete"}>Compelete</option>
+      </Status>
 
-      
-      <TodoStatus status={props.status} style={{margin: 'auto'}}/>
-      <TodoPriority priority={props.priority} style={{margin: 'auto'}}/>
+      <TodoPriority priority={props.priority} style={{ margin: "auto" }} />
 
-     
-
-      <TodoMenu ButtonText={ <MenuButton>
-        <Menu />
-      </MenuButton>} />
-      <TodoForm onAddTodo = {addTodoHandler} />
+      <TodoMenu
+        ButtonText={
+          <MenuButton>
+            <Menu />
+          </MenuButton>
+        }
+      />
     </Container>
   );
 };
@@ -58,8 +52,21 @@ const Container = styled.div`
   border-bottom: 0.5px solid #e0e0e0;
   position: relative;
 `;
-
+const OuterDiv = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+`;
 const TodoHeading = styled.p`
+  font-weight: bold;
+  font-size: 16px;
+  color: #000000;
+  margin-left: 6px;
+  width: 50%;
+`;
+
+const TodoDescription = styled.p`
+  margin-top: 10px;
   font-weight: 400;
   font-size: 14px;
   color: #000000;
@@ -67,9 +74,31 @@ const TodoHeading = styled.p`
   width: 50%;
 `;
 
+const Status = styled("select")`
+  outline: none;
+  appearance: none;
+  background: ${(props) =>
+    props.status === "pending"
+      ? "rgba(242, 153, 74, 0.2)"
+      : props.status === "inProgress"
+      ? "rgba(86, 204, 242, 0.2)"
+      : "rgba(39, 174, 96, 0.2)"};
+  border-radius: 8.5px;
+  padding: 5px 15px;
+  text-align: center;
 
+  border: none;
+  margin: auto;
+  font-size: 12px;
 
+  option {
+    appearance: none;
 
+    background: #fff;
+    border: none;
+    padding: 5px 15px;
+  }
+`;
 
 const MenuButton = styled.button`
   background: #8b8a8a;
@@ -80,9 +109,8 @@ const MenuButton = styled.button`
   width: 22px;
   border-radius: 50%;
   border: none;
-  svg{
+  svg {
     height: 15px;
     width: 15px;
   }
 `;
-

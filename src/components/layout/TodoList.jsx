@@ -1,32 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import TodoItem from "./TodoItem";
-
-const Dummy_Todo = [
-  {
-    id: 1,
-    title: "MyFist Todo",
-    description: "Ali is Great dev",
-    status: "Pending",
-    priority: "Normal",
-  },
-  {
-    id: 2,
-    title: "MyFist Todo",
-    description: "Ali is Great dev",
-    status: "Compelete",
-    priority: "Minor",
-  },
-];
+import TodoContext from "../../context/todo-context";
 
 const TodoList = () => {
+  const todoCtx = useContext(TodoContext);
+
   return (
     <>
-      {Dummy_Todo.map((todoItem) => (
+      {todoCtx.todoList.map((todoItem) => (
         <TodoItem
-          id = {todoItem.id}
+          id={todoItem.id}
           key={todoItem.id}
           title={todoItem.title}
-          description={todoItem.description}
+          description={todoItem.desc}
           status={todoItem.status}
           priority={todoItem.priority}
         />

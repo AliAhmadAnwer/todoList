@@ -2,7 +2,7 @@ import React from 'react'
 
 const Sidebar = () => {
   return (
-    <div>Sidebar</div>
+    <div style={{width: '20%'}} >Sidebar</div>
   )
 }
 

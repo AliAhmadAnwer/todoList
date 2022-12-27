@@ -29,7 +29,7 @@ const TodoProvider = (props) => {
     const [todoState, dispatchTodoAction] = useReducer(todoReducer, defaultTodoState)
 
     const newTodoHandler = (item)=>{
-        dispatchTodoAction({type: 'NEW',item: item })
+        dispatchTodoAction({type: 'NEW',item: item  })
     }
 
 
@@ -37,6 +37,9 @@ const TodoProvider = (props) => {
         todoList: todoState.todoList,
         newTodo: newTodoHandler
     }
+
+
+    console.log(todoContext.todoList)
 
 
     return(
