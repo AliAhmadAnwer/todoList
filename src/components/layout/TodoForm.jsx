@@ -3,30 +3,44 @@ import styled from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import TodoContext from "../../context/todo-context";
+import moment from "moment/moment";
+import userInput from "../Hooks/user-input";
+
+
 
 export default function TodoForm(props) {
+  const currDate = moment().format(moment.HTML5_FMT.DATETIME_LOCAL);
+
+  const valueFc = (value) =>  value.trim() !== '' 
+
+  const {userInputValue: titleInput,
+  inputChangeHandler: titleChangeHandlers,
+  validate: titleIsValid, hasError: titleErrorHandle, inputBlurHandle: titleBlurHandle} = userInput(valueFc)
+
+  const {userInputValue: descInput,
+  inputChangeHandler: descChangeHandler} = userInput(valueFc)
+
+  const {userInputValue: startDate,
+  inputChangeHandler: startDateHandler} = userInput(valueFc)
+
+  const {userInputValue: endDate,
+  inputChangeHandler: endDateHandler} = userInput(valueFc)
+
+  
+
   const todoCtx = useContext(TodoContext);
-  const [taskTitle, setTaskTitle] = useState("");
 
-  const [taskDesc, setTaskDesc] = useState("");
+  let formIsValid = false
 
-  const [taskDate, setTaskDate] = useState("");
+  
+ 
 
   const [taskStatus, setTaskStatus] = useState("pending");
 
   const [taskPriority, setTaskPriority] = useState("minor");
 
-  const titleChangeHandler = (event) => {
-    setTaskTitle(event.target.value);
-  };
+ 
 
-  const descChangeHandler = (e) => {
-    setTaskDesc(e.target.value);
-  };
-
-  const dateChangeHandler = (e) => {
-    setTaskDate(e.target.value);
-  };
 
   const taskStatusHandler = (e) => {
     setTaskStatus(e.target.value);
@@ -39,10 +53,14 @@ export default function TodoForm(props) {
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
+    if(titleIsValid){
+      formIsValid = true
+    }
+
     const data = {
-      title: taskTitle,
-      desc: taskDesc,
-      date: taskDate,
+      title: titleInput,
+      desc: descInput,
+      date: startDate,
       status: taskStatus,
       priority: taskPriority,
       id: (todoCtx.todoList.length + 1).toString(),
@@ -51,45 +69,58 @@ export default function TodoForm(props) {
 
     todoCtx.newTodo(data);
 
-    setTaskTitle("");
-    setTaskDesc("");
-    setTaskDate("");
+    
     setTaskStatus("pending");
     setTaskPriority("minor");
     props.setAddNew(false);
+   
+    
+
   };
+
 
   return (
     <div sx={{ borderRadius: "50%", background: "#000" }}>
-    
       <Dialog open={props.addNew} style={{ borderRadius: "50%" }}>
         <DialogContent sx={{ maxWidth: "700px", padding: "60px" }}>
-          <Form>
+          <Form  onSubmit={formSubmitHandler}>
             <Label>Task</Label>
             <Input
+            onBlur={titleBlurHandle}
               type="text"
-              value={taskTitle}
-              onChange={titleChangeHandler}
+              value={titleInput}
+              onChange={titleChangeHandlers}
             />
+            {titleErrorHandle ? <p>Please Enter The Title</p> : ''}
+           
             <Label>Description</Label>
             <TextArea
               type="textarea"
-              value={taskDesc}
+              value={descInput}
               onChange={descChangeHandler}
             />
             <OuterDiv>
               <InnerDiv>
-                <Label>Date</Label>
+                <Label>Start Date</Label>
+
                 <Input
-                   
-                  type='date'
-                  value={taskDate}
-                  onChange={dateChangeHandler}
+                  type={"datetime-local"}
+                  min={currDate}
+                  value={startDate}
+                  onChange={startDateHandler}
                 />
               </InnerDiv>
               <InnerDiv>
-                <Label>Time</Label>
-                <Input type="time" />
+                <Label>End Date</Label>
+
+                <Input
+                  type={"datetime-local"}
+                  disabled={!startDate}
+                  min={startDate}
+                  value={endDate}
+                  step="3600"
+                  onChange={endDateHandler}
+                />
               </InnerDiv>
             </OuterDiv>
             <OuterDiv>
@@ -116,7 +147,7 @@ export default function TodoForm(props) {
                 Cancel
               </AddNewButton>
 
-              <AddNewButton onClick={formSubmitHandler}>Add New</AddNewButton>
+              <AddNewButton type="button"  >Add New</AddNewButton>
             </BtnDiv>
           </Form>
         </DialogContent>
@@ -172,7 +203,7 @@ const AddNewButton = styled.button`
 
 const OuterDiv = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   justify-content: space-between;
   /* justify-content: flex-start; */
@@ -181,8 +212,8 @@ const OuterDiv = styled.div`
 const InnerDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: 45%;
 `;
+
 
 const Select = styled.select`
   width: 100%;

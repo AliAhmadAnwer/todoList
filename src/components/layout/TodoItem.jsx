@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Menu, Radio } from "../../Icons/index";
 import TodoMenu from "./TodoMenu";
-import TodoPriority from "./TodoPriority";
+import CircleRing from "../../Icons/CircleRing";
 
 const TodoItem = (props) => {
   const [statusOption, setStausOption] = useState(props.status);
@@ -11,6 +11,14 @@ const TodoItem = (props) => {
   const statusHandler = (e) => {
     setStausOption(e.target.value);
   };
+
+  const [priorityOption, setPriorityOption] = useState(props.priority);
+
+  const priorityHandle = (e) => {
+    setPriorityOption(e.target.value);
+  };
+
+  console.log(props.status)
 
   return (
     <Container>
@@ -27,10 +35,18 @@ const TodoItem = (props) => {
       >
         <option value={"pending"}>Pending</option>
         <option value={"inProgress"}>In Progress</option>
-        <option value={"compelete"}>Compelete</option>
+        <option value={"complete"}>Compelete</option>
       </Status>
 
-      <TodoPriority priority={props.priority} style={{ margin: "auto" }} />
+      <Priority  priority={priorityOption}>
+      <CircleRing />
+
+      <select value={priorityOption} onChange={priorityHandle}>
+        <option value={"minor"}>Minor</option>
+        <option value={"normal"}>Normal</option>
+        <option value={"critical"}>Critical</option>
+      </select>
+    </Priority>
 
       <TodoMenu
         ButtonText={
@@ -97,6 +113,35 @@ const Status = styled("select")`
     background: #fff;
     border: none;
     padding: 5px 15px;
+  }
+`;
+
+const Priority = styled.div`
+  font-weight: 400;
+  font-size: 12px;
+  color: #5c626d;
+  /* margin: auto; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    margin-right: 4px;
+    circle {
+      stroke: ${({ priority }) =>
+        priority === "minor"
+          ? "#219653"
+          : priority === "normal"
+          ? "#F2C94C"
+          : "#EB5757"};
+    }
+  }
+
+  select {
+    appearance: none;
+    border: none;
+    outline: none;
+    background: none;
   }
 `;
 
