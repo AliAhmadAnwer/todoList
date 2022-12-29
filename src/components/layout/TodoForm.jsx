@@ -3,44 +3,36 @@ import styled from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import TodoContext from "../../context/todo-context";
-import moment from "moment/moment";
-import userInput from "../Hooks/user-input";
-
-
+import moment from "moment";
+import userInput from "../../hooks/user-input";
 
 export default function TodoForm(props) {
   const currDate = moment().format(moment.HTML5_FMT.DATETIME_LOCAL);
 
-  const valueFc = (value) =>  value.trim() !== '' 
+  const valueFc = (value) => value.trim() !== "";
 
-  const {userInputValue: titleInput,
-  inputChangeHandler: titleChangeHandlers,
-  validate: titleIsValid, hasError: titleErrorHandle, inputBlurHandle: titleBlurHandle} = userInput(valueFc)
+  const {
+    userInputValue: titleInput,
+    inputChangeHandler: titleChangeHandlers,
+    validate: titleIsValid,
+    hasError: titleErrorHandle,
+    inputBlurHandle: titleBlurHandle,
+  } = userInput(valueFc);
 
-  const {userInputValue: descInput,
-  inputChangeHandler: descChangeHandler} = userInput(valueFc)
+  const { userInputValue: descInput, inputChangeHandler: descChangeHandler } =
+    userInput(valueFc);
 
-  const {userInputValue: startDate,
-  inputChangeHandler: startDateHandler} = userInput(valueFc)
+  const { userInputValue: startDate, inputChangeHandler: startDateHandler } =
+    userInput(valueFc);
 
-  const {userInputValue: endDate,
-  inputChangeHandler: endDateHandler} = userInput(valueFc)
-
-  
+  const { userInputValue: endDate, inputChangeHandler: endDateHandler } =
+    userInput(valueFc);
 
   const todoCtx = useContext(TodoContext);
-
-  let formIsValid = false
-
-  
- 
 
   const [taskStatus, setTaskStatus] = useState("pending");
 
   const [taskPriority, setTaskPriority] = useState("minor");
-
- 
-
 
   const taskStatusHandler = (e) => {
     setTaskStatus(e.target.value);
@@ -50,11 +42,13 @@ export default function TodoForm(props) {
     setTaskPriority(e.target.value);
   };
 
+  let formIsValid = titleIsValid;
+
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    if(titleIsValid){
-      formIsValid = true
+    if (!formIsValid) {
+      return;
     }
 
     const data = {
@@ -69,30 +63,25 @@ export default function TodoForm(props) {
 
     todoCtx.newTodo(data);
 
-    
     setTaskStatus("pending");
     setTaskPriority("minor");
     props.setAddNew(false);
-   
-    
-
   };
-
 
   return (
     <div sx={{ borderRadius: "50%", background: "#000" }}>
       <Dialog open={props.addNew} style={{ borderRadius: "50%" }}>
         <DialogContent sx={{ maxWidth: "700px", padding: "60px" }}>
-          <Form  onSubmit={formSubmitHandler}>
+          <Form onSubmit={formSubmitHandler}>
             <Label>Task</Label>
             <Input
-            onBlur={titleBlurHandle}
+              onBlur={titleBlurHandle}
               type="text"
               value={titleInput}
               onChange={titleChangeHandlers}
             />
-            {titleErrorHandle ? <p>Please Enter The Title</p> : ''}
-           
+            {titleErrorHandle ? <p>Please Enter The Title</p> : ""}
+
             <Label>Description</Label>
             <TextArea
               type="textarea"
@@ -147,7 +136,7 @@ export default function TodoForm(props) {
                 Cancel
               </AddNewButton>
 
-              <AddNewButton type="button"  >Add New</AddNewButton>
+              <AddNewButton type="submit">Add New</AddNewButton>
             </BtnDiv>
           </Form>
         </DialogContent>
@@ -213,7 +202,6 @@ const InnerDiv = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 
 const Select = styled.select`
   width: 100%;
