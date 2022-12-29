@@ -16,6 +16,7 @@ export default function TodoForm(props) {
     inputChangeHandler: titleChangeHandlers,
     validate: titleIsValid,
     hasError: titleErrorHandle,
+    inputBlurHandle: titleBlurHandle,
   } = userInput(valueFc);
 
   const { userInputValue: descInput, inputChangeHandler: descChangeHandler } =
@@ -41,10 +42,7 @@ export default function TodoForm(props) {
     setTaskPriority(e.target.value);
   };
 
-  let formIsValid = titleIsValid ;
-
-
-
+  let formIsValid = titleIsValid;
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -77,7 +75,7 @@ export default function TodoForm(props) {
           <Form onSubmit={formSubmitHandler}>
             <Label>Task</Label>
             <Input
-
+              onBlur={titleBlurHandle}
               type="text"
               value={titleInput}
               onChange={titleChangeHandlers}
