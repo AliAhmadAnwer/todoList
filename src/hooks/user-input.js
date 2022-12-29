@@ -5,7 +5,6 @@ const UserInput = (value) => {
 
   const [isTouched, setIsTouched] = useState(false)
 
-//   const validate = props.valid(userInputValue)
 const validate = value(userInputValue)
 
 const hasError = !validate && isTouched

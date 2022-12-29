@@ -16,7 +16,6 @@ export default function TodoForm(props) {
     inputChangeHandler: titleChangeHandlers,
     validate: titleIsValid,
     hasError: titleErrorHandle,
-    inputBlurHandle: titleBlurHandle,
   } = userInput(valueFc);
 
   const { userInputValue: descInput, inputChangeHandler: descChangeHandler } =
@@ -42,7 +41,10 @@ export default function TodoForm(props) {
     setTaskPriority(e.target.value);
   };
 
-  let formIsValid = titleIsValid;
+  let formIsValid = titleIsValid ;
+
+
+
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -75,12 +77,12 @@ export default function TodoForm(props) {
           <Form onSubmit={formSubmitHandler}>
             <Label>Task</Label>
             <Input
-              onBlur={titleBlurHandle}
+
               type="text"
               value={titleInput}
               onChange={titleChangeHandlers}
             />
-            {titleErrorHandle ? <p>Please Enter The Title</p> : ""}
+            {titleErrorHandle && <p>Please Enter The Title</p>}
 
             <Label>Description</Label>
             <TextArea
@@ -136,7 +138,7 @@ export default function TodoForm(props) {
                 Cancel
               </AddNewButton>
 
-              <AddNewButton type="submit">Add New</AddNewButton>
+              <AddNewButton disabled={!formIsValid} type="submit">Add New</AddNewButton>
             </BtnDiv>
           </Form>
         </DialogContent>
@@ -188,6 +190,9 @@ const AddNewButton = styled.button`
   color: #fff;
   right: 0;
   margin-left: 10px;
+  &:disabled{
+    background: gray;
+  }
 `;
 
 const OuterDiv = styled.div`
