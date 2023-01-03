@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -8,8 +8,14 @@ import userInput from "../../hooks/user-input";
 
 export default function TodoForm(props) {
   const currDate = moment().format(moment.HTML5_FMT.DATETIME_LOCAL);
+  const todoCtx = useContext(TodoContext);
 
-  const valueFc = (value) => value.trim() !== "";
+  // useEffect(()=>{
+  //   titleChangeHandlers(todoCtx.editTodo.titleInput)
+  // },[])
+  
+
+  const isValid = (value) => value.trim() !== "";
 
   const {
     userInputValue: titleInput,
@@ -17,18 +23,37 @@ export default function TodoForm(props) {
     validate: titleIsValid,
     hasError: titleErrorHandle,
     inputBlurHandle: titleBlurHandle,
-  } = userInput(valueFc);
+    reset: titleReset,
+  } = userInput(isValid);
 
-  const { userInputValue: descInput, inputChangeHandler: descChangeHandler } =
-    userInput(valueFc);
+  const {
+    userInputValue: descInput,
+    inputChangeHandler: descChangeHandler,
+    validate: descIsValid,
+    hasError: descErrorHandle,
+    inputBlurHandle: descBlurHandle,
+    reset: descReset,
+  } = userInput(isValid);
 
-  const { userInputValue: startDate, inputChangeHandler: startDateHandler } =
-    userInput(valueFc);
+  const {
+    userInputValue: startDate,
+    inputChangeHandler: startDateHandler,
+    validate: startDateIsValid,
+    hasError: startDateErrorHandle,
+    inputBlurHandle: startDateBlurHandle,
+    reset: startDateReset,
+  } = userInput(isValid);
 
-  const { userInputValue: endDate, inputChangeHandler: endDateHandler } =
-    userInput(valueFc);
+  const {
+    userInputValue: endDate,
+    inputChangeHandler: endDateHandler,
+    validate: endDateIsValid,
+    hasError: endDateErrorHandle,
+    inputBlurHandle: endDateBlurHandle,
+    reset: endDateReset,
+  } = userInput(isValid);
 
-  const todoCtx = useContext(TodoContext);
+  
 
   const [taskStatus, setTaskStatus] = useState("pending");
 
@@ -42,7 +67,10 @@ export default function TodoForm(props) {
     setTaskPriority(e.target.value);
   };
 
-  let formIsValid = titleIsValid;
+  let formIsValid = false;
+  if (titleIsValid && descIsValid && startDateIsValid && endDateIsValid) {
+    formIsValid = true;
+  }
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -62,54 +90,76 @@ export default function TodoForm(props) {
     // props.onAddTodo(data)
 
     todoCtx.newTodo(data);
-
+    titleReset();
+    descReset();
+    startDateReset();
+    endDateReset();
     setTaskStatus("pending");
     setTaskPriority("minor");
+    formIsValid = false;
     props.setAddNew(false);
   };
 
   return (
     <div sx={{ borderRadius: "50%", background: "#000" }}>
-      <Dialog open={props.addNew} style={{ borderRadius: "50%" }}>
-        <DialogContent sx={{ maxWidth: "700px", padding: "60px" }}>
+      <Dialog open={props.addNew} sx={{ borderRadius: "50%" }}>
+        <DialogContent sx={{ width: "auto ", padding: "60px" }}>
           <Form onSubmit={formSubmitHandler}>
             <Label>Task</Label>
             <Input
+              onError={titleErrorHandle ? titleErrorHandle : null}
               onBlur={titleBlurHandle}
               type="text"
               value={titleInput}
               onChange={titleChangeHandlers}
             />
-            {titleErrorHandle && <p>Please Enter The Title</p>}
+
+            {titleErrorHandle && (
+              <ErrorMessage>Please Enter The Title</ErrorMessage>
+            )}
 
             <Label>Description</Label>
             <TextArea
+              onError={descErrorHandle ? descErrorHandle : null}
+              onBlur={descBlurHandle}
               type="textarea"
               value={descInput}
               onChange={descChangeHandler}
             />
+            {descErrorHandle && (
+              <ErrorMessage>Please Enter Description</ErrorMessage>
+            )}
             <OuterDiv>
               <InnerDiv>
                 <Label>Start Date</Label>
 
                 <Input
+                  onError={startDateErrorHandle ? startDateErrorHandle : null}
+                  onBlur={startDateBlurHandle}
                   type={"datetime-local"}
                   min={currDate}
                   value={startDate}
                   onChange={startDateHandler}
                 />
+                {startDateErrorHandle && (
+                  <ErrorMessage>Please Enter Start Date</ErrorMessage>
+                )}
               </InnerDiv>
               <InnerDiv>
                 <Label>End Date</Label>
 
                 <Input
+                  onError={endDateErrorHandle ? endDateErrorHandle : null}
+                  onBlur={endDateBlurHandle}
                   type={"datetime-local"}
                   disabled={!startDate}
                   min={startDate}
                   value={endDate}
-                  step="3600"
                   onChange={endDateHandler}
                 />
+                {endDateErrorHandle && (
+                  <ErrorMessage>Please Enter End Date</ErrorMessage>
+                )}
               </InnerDiv>
             </OuterDiv>
             <OuterDiv>
@@ -132,11 +182,16 @@ export default function TodoForm(props) {
             </OuterDiv>
 
             <BtnDiv>
-              <AddNewButton onClick={() => props.setAddNew(false)}>
+              <AddNewButton
+                type="button"
+                onClick={() => props.setAddNew(false)}
+              >
                 Cancel
               </AddNewButton>
 
-              <AddNewButton disabled={!formIsValid} type="submit">Add New</AddNewButton>
+              <AddNewButton disabled={!formIsValid} type="submit">
+                Add New
+              </AddNewButton>
             </BtnDiv>
           </Form>
         </DialogContent>
@@ -160,7 +215,8 @@ const Input = styled.input`
   padding: 10px;
   font-size: 18px;
   outline: none;
-  border: 1px solid #000;
+  background: ${(p) => (p.onError ? "#f3b26f73" : "#fff")};
+  border: ${(p) => (p.onError ? "1px solid red" : "1px solid black")};
   border-radius: 10px;
 `;
 const TextArea = styled.textarea`
@@ -170,7 +226,8 @@ const TextArea = styled.textarea`
   padding: 10px;
   font-size: 15px;
   outline: none;
-  border: 1px solid #000;
+  background: ${(props) => (props.onError ? "#f3b26f73" : "#fff")};
+  border: ${(props) => (props.onError ? "1px solid red" : "1px solid black")};
   border-radius: 10px;
 `;
 const BtnDiv = styled.div`
@@ -188,7 +245,7 @@ const AddNewButton = styled.button`
   color: #fff;
   right: 0;
   margin-left: 10px;
-  &:disabled{
+  &:disabled {
     background: gray;
   }
 `;
@@ -216,4 +273,9 @@ const Select = styled.select`
   border: 1px solid #000;
   border-radius: 10px;
   background: #fff;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 12px;
+  color: red;
 `;

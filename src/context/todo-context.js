@@ -3,8 +3,8 @@ const TodoContext = React.createContext(
     {
         todoList : [],
         newTodo: (item) => {},
-        editTodo: () => {},
-        deleteTodo: () => {},
+        editTodo: (item) => {},
+        deleteTodo: (item) => {},
 
     }
 )

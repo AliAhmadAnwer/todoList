@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import TodoItem from "./TodoItem";
 import TodoContext from "../../context/todo-context";
 
-const TodoList = () => {
+const TodoList = (props) => {
   const todoCtx = useContext(TodoContext);
 
   return (
@@ -15,6 +15,7 @@ const TodoList = () => {
           description={todoItem.desc}
           status={todoItem.status}
           priority={todoItem.priority}
+          addnew = {props.setAddNew}
         />
       ))}
     </>

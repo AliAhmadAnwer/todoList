@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { Menu, Radio } from "../../Icons/index";
-import TodoMenu from "./TodoMenu";
+import { Radio } from "../../Icons/index";
 import CircleRing from "../../Icons/CircleRing";
+import TodoContext from "../../context/todo-context";
 
 const TodoItem = (props) => {
   const [statusOption, setStausOption] = useState(props.status);
+  const [priorityOption, setPriorityOption] = useState(props.priority);
+  const todoCtx = useContext(TodoContext)
 
   const statusHandler = (e) => {
     setStausOption(e.target.value);
   };
 
-  const [priorityOption, setPriorityOption] = useState(props.priority);
-
   const priorityHandle = (e) => {
     setPriorityOption(e.target.value);
   };
 
-  console.log(props.status)
+  const editHandler = (e) => {
+    todoCtx.editTodo(e.target.id)
+  };
+
+  const deleteHandler = (e) => {
+    todoCtx.deleteTodo(e.target.id)
+  };
 
   return (
     <Container>
@@ -38,23 +44,20 @@ const TodoItem = (props) => {
         <option value={"complete"}>Compelete</option>
       </Status>
 
-      <Priority  priority={priorityOption}>
-      <CircleRing />
+      <Priority priority={priorityOption}>
+        <CircleRing />
 
-      <select value={priorityOption} onChange={priorityHandle}>
-        <option value={"minor"}>Minor</option>
-        <option value={"normal"}>Normal</option>
-        <option value={"critical"}>Critical</option>
-      </select>
-    </Priority>
+        <select value={priorityOption} onChange={priorityHandle}>
+          <option value={"minor"}>Minor</option>
+          <option value={"normal"}>Normal</option>
+          <option value={"critical"}>Critical</option>
+        </select>
+      </Priority>
 
-      <TodoMenu
-        ButtonText={
-          <MenuButton>
-            <Menu />
-          </MenuButton>
-        }
-      />
+      <MenuButton>
+        <button id={props.id} onClick={(e) => editHandler(e)} addNew = {props.addnew}>Edit</button>
+        <button id={props.id} onClick={(e) => deleteHandler(e)}>Delete</button>
+      </MenuButton>
     </Container>
   );
 };
@@ -120,7 +123,7 @@ const Priority = styled.div`
   font-weight: 400;
   font-size: 12px;
   color: #5c626d;
-  /* margin: auto; */
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,17 +148,16 @@ const Priority = styled.div`
   }
 `;
 
-const MenuButton = styled.button`
+const MenuButton = styled.span`
   background: #8b8a8a;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 22px;
-  width: 22px;
-  border-radius: 50%;
+
+
   border: none;
-  svg {
-    height: 15px;
-    width: 15px;
+  button{
+    margin-left: 10px;
   }
+
 `;

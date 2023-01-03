@@ -19,6 +19,7 @@ const hasError = !validate && isTouched
 
   const reset = () => {
     setUserInputValue("");
+    setIsTouched(false)
   };
 
   return {

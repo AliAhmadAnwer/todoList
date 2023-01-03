@@ -21,7 +21,7 @@ const TodosContainer = () => {
         
     <AlertDialog addNew={addNew} setAddNew={setAddNew} />
     <span style={{fontSize: '18px' , fontWeight : 500 , color : '#1D262C' ,}}>On Hold</span>
-    <TodoList />
+    <TodoList setAddNew={setAddNew} />
 
     </div>
   )
@@ -41,6 +41,7 @@ font-size: 36px;
 font-style: normal;
 color: #1D262C;
 margin-bottom: 40px;
+width: 40%;
 
 >span{
     color: #F3477A;
@@ -52,9 +53,9 @@ const AddNewButton = styled.button`
   width: 139px;
 height: 34px;
 margin-top: 13px;
-margin-left: 30px;
 border: none;
 background: #884CB2;
 border-radius: 10px;
 color: #fff;
+
 `
